@@ -1,121 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export type Bowl = {
+  id: number;
+  name: string;
+  volume_ml: number;
+  slot_count: number;
+  shape: "square" | "round";
+};
+
+const bowls: Bowl[] = [
+  { id: 1, name: "Neliö 250 ml", volume_ml: 250, slot_count: 6, shape: "square" },
+  { id: 2, name: "Neliö 500 ml", volume_ml: 500, slot_count: 6, shape: "square" },
+  { id: 3, name: "Ympyrä 250 ml", volume_ml: 250, slot_count: 6, shape: "round" },
+  { id: 4, name: "Ympyrä 500 ml", volume_ml: 500, slot_count: 6, shape: "round" },
+];
+
+export default function App() {
+  const [selected, setSelected] = useState<Bowl | null>(null);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="min-h-screen bg-[#f3f4f6] flex items-center justify-center p-6">
+      <div className="flex w-full max-w-7xl justify-between items-center gap-6">
 
-      <div className="ticks"></div>
+        {/* Vasen paneeli */}
+        <div className="bg-[#2f2f2f] text-white rounded-[40px] p-6 w-64 flex flex-col gap-6">
+          <div className="text-center">
+            <div className="bg-white text-black rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2">1.</div>
+            <div className="font-semibold">Valitse rasia</div>
+          </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          {bowls.map((bowl) => (
+            <div
+              key={bowl.id}
+              onClick={() => setSelected(bowl)}
+              className={`flex items-center gap-4 cursor-pointer ${
+                selected?.id === bowl.id ? "text-lime-400" : "text-gray-300"
+              }`}
+            >
+              <div className="w-14 h-14 rounded-full bg-[#c2a679]"></div>
+              <div>{bowl.name}</div>
+            </div>
+          ))}
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        {/* Oikea paneeli */}
+        <div className="bg-[#2f2f2f] text-white rounded-[40px] p-6 w-64 flex flex-col gap-6">
+          <div className="text-center">
+            <div className="bg-white text-black rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2">2.</div>
+            <div className="font-semibold">Valitse salaattipohja</div>
+          </div>
+
+          {["Salaattimix rose", "Jäävuorisalaatti", "Kuninkaallinen salaatti", "Provencali sekoitus", "Saariston salaattisekoitus"].map((item) => (
+            <div key={item} className="flex items-center justify-between">
+              <span className="text-sm">{item}</span>
+              <div className="w-10 h-10 rounded-full bg-green-400"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
-
-export default App
