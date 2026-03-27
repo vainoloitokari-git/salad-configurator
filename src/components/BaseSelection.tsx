@@ -1,11 +1,17 @@
-export default function BaseSelection() {
-  const items = [
-    "Salaattimix rose",
-    "Jäävuorisalaatti",
-    "Kuninkaallinen salaatti",
-    "Provensaali sekoitus",
-    "Saariston salaattisekoitus",
-  ];
+type Ingredient = {
+  id: number;
+  name: string;
+  categoryId: number;
+};
+
+type Props = {
+  ingredients: Ingredient[];
+};
+
+export default function BaseSelection({ ingredients }: Props) {
+  const baseItems = ingredients.filter(
+    (ingredient) => ingredient.categoryId === 6
+  );
 
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-6 text-white w-64 flex flex-col gap-4 shadow-lg">
@@ -17,16 +23,15 @@ export default function BaseSelection() {
         <div className="font-semibold">Valitse salaattipohja</div>
       </div>
 
-      {items.map((item) => (
+      {baseItems.map((item) => (
         <div
-          key={item}
+          key={item.id}
           className="border-b border-gray-600 pb-2 flex justify-between items-center"
         >
-          <span className="text-sm">{item}</span>
+          <span className="text-sm">{item.name}</span>
           <div className="w-8 h-8 rounded-full bg-green-400 cursor-pointer"></div>
         </div>
       ))}
-
     </div>
   );
 }
