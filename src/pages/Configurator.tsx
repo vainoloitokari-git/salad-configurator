@@ -6,18 +6,30 @@ import BowlSelection from "../components/BowlSelection"
 import BaseSelection from "../components/BaseSelection"
 import IngredientSection from "../components/IngredientSection"
 import SummaryBar from "../components/SummaryBar"
-import { getBowls } from "../services/api"
+import { getBowls, getCategories } from "../services/api"
 
 function App() {
   const [bowls, setBowls] = useState([])
+  const [categories, setCategories] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    const fetchBowls = async () => {
-      const data = await getBowls()
-      setBowls(data)
+    const fetchData = async () => {
+      setIsLoading(true)
+      try {
+      const bowlsData = await getBowls()
+      const categoriesData = await getCategories()
+
+      setBowls(bowlsData)
+      setCategories(categoriesData)
+      } catch(error) {
+        console.error("Error fetching data:", error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
-    fetchBowls()
+    fetchData()
   }, [])
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
