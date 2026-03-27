@@ -6,7 +6,7 @@ import BowlSelection from "../components/BowlSelection"
 import BaseSelection from "../components/BaseSelection"
 import IngredientSection from "../components/IngredientSection"
 import SummaryBar from "../components/SummaryBar"
-import { getBowls, getCategories } from "../services/api"
+import { getBowls, getCategories, getIngredients } from "../services/api"
 import type {Bowl, Category, Ingredient} from "../types"
 
 function App() {
@@ -21,7 +21,9 @@ function App() {
       try {
       const bowlsData = await getBowls()
       const categoriesData = await getCategories()
+      const ingredientsData = await getIngredients()
 
+      setIngredients(ingredientsData)
       setBowls(bowlsData)
       setCategories(categoriesData)
       } catch(error) {
@@ -35,7 +37,7 @@ function App() {
   }, [])
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
-      <Header />
+
 
       <main className="flex-1 max-w-6xl w-full mx-auto p-6 flex flex-col gap-8 mt-4">
           <div className="grid grid-cols-1 lg:grid-cols-[256px_1fr_256px] gap-6 items-center">
@@ -59,7 +61,7 @@ function App() {
 
       </main>
 
-      <Footer />
+      
     </div>
   )
 }

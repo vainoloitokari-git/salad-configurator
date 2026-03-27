@@ -1,4 +1,4 @@
-const BASE_URL = "https://fresse-api.onrender.com/api/..."
+const BASE_URL = "https://fresse-api.onrender.com/api"
 
 export async function getBowls() {
 
