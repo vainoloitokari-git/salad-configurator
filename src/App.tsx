@@ -23,7 +23,7 @@ function App() {
           </div>
 
           <div className="flex justify-center">
-            <BaseSelection />
+            
           </div>
 
         </div>
