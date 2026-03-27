@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react"
-import Header from "../components/Header"
-import Footer from "../components/Footer"
 import CenterBowl from "../components/CenterBowl"
 import BowlSelection from "../components/BowlSelection"
 import BaseSelection from "../components/BaseSelection"
 import IngredientSection from "../components/IngredientSection"
 import SummaryBar from "../components/SummaryBar"
 import { getBowls, getCategories, getIngredients } from "../services/api"
-import type {Bowl, Category, Ingredient} from "../types"
+import type { Bowl, Category, Ingredient } from "../types"
 
 function App() {
   const [bowls, setBowls] = useState<Bowl[]>([])
@@ -43,7 +41,7 @@ function App() {
           <div className="grid grid-cols-1 lg:grid-cols-[256px_1fr_256px] gap-6 items-center">
 
           <div className="flex justify-center">
-            <BowlSelection />
+            <BowlSelection bowls={bowls} />
           </div>
 
           <div className="flex justify-center items-center">
