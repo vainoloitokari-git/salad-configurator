@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import CenterBowl from "../components/CenterBowl"
@@ -5,8 +6,19 @@ import BowlSelection from "../components/BowlSelection"
 import BaseSelection from "../components/BaseSelection"
 import IngredientSection from "../components/IngredientSection"
 import SummaryBar from "../components/SummaryBar"
+import { getBowls } from "../services/api"
 
 function App() {
+  const [bowls, setBowls] = useState([])
+
+  useEffect(() => {
+    const fetchBowls = async () => {
+      const data = await getBowls()
+      setBowls(data)
+    }
+
+    fetchBowls()
+  }, [])
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
       <Header />
