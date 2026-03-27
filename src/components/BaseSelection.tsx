@@ -9,6 +9,7 @@ type Props = {
 };
 
 export default function BaseSelection({ ingredients }: Props) {
+  console.log(ingredients);
   const baseItems = ingredients.filter(
     (ingredient) => ingredient.categoryId === 6
   );
