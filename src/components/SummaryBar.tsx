@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 export default function SummaryBar() {
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-8 text-white w-full flex flex-col md:flex-row gap-8 shadow-xl">
@@ -31,6 +31,12 @@ export default function SummaryBar() {
           </div>
           <div className="text-sm text-gray-300">Hinta</div>
         </div>
+
+        <Link to="/print">
+        <button className="bg-white text-black font-semibold px-6 py-2 rounded-full shadow-md hover:bg-gray-200 transition">
+            Tulosta_Nappula
+        </button>
+        </Link>  
 
       </div>
     </div>
