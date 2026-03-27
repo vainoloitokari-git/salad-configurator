@@ -7,10 +7,12 @@ import BaseSelection from "../components/BaseSelection"
 import IngredientSection from "../components/IngredientSection"
 import SummaryBar from "../components/SummaryBar"
 import { getBowls, getCategories } from "../services/api"
+import type {Bowl, Category, Ingredient} from "../types"
 
 function App() {
-  const [bowls, setBowls] = useState([])
-  const [categories, setCategories] = useState([])
+  const [bowls, setBowls] = useState<Bowl[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
+  const [ingredients, setIngredients] = useState<Ingredient[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -47,7 +49,7 @@ function App() {
           </div>
 
           <div className="flex justify-center">
-            <BaseSelection />
+            <BaseSelection ingredients = {ingredients} />
           </div>
 
         </div>
