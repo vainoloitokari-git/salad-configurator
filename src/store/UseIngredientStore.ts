@@ -51,7 +51,18 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
     console.warn("addIngredient not implemented yet", item);
   },
 
-  removeIngredient: (id) => {
-    console.warn("removeIngredient not implemented yet", id);
-  },
+removeIngredient: (id) =>
+    set((state) => {
+    const newSlots = { ...state.slots };
+    const slotKey = Object.keys(newSlots).find(
+      (key) => newSlots[key]?.id === id
+    );
+
+    if (slotKey) {
+      newSlots[slotKey] = null;
+    }
+
+    return { slots: newSlots };
+  }),
+
 }));
