@@ -54,8 +54,12 @@ function App() {
 
         </div>
 
-        <IngredientSection />
-        <SummaryBar />
+<IngredientSection 
+  categories={categories} 
+  ingredients={ingredients} 
+/>
+      <SummaryBar />
+
 
       </main>
 

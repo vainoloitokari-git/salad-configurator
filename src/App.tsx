@@ -10,7 +10,7 @@ import Print from "./pages/Print";
 
 function App() {
   return (
-    <BrowserRouter>
+
       <div className="min-h-screen flex flex-col bg-white font-sans">
         <Header />
 
@@ -22,7 +22,7 @@ function App() {
 
         <Footer />
       </div>
-    </BrowserRouter>
+
   );
 }
 
