@@ -1,10 +1,6 @@
 import { create } from "zustand";
+import type { Ingredient } from "../types";
 
-export interface Ingredient {
-    id: string;
-    name: string;
-    image?: string;
-}
 
 export interface Bowl {
     id: string;
@@ -55,7 +51,7 @@ removeIngredient: (id) =>
     set((state) => {
     const newSlots = { ...state.slots };
     const slotKey = Object.keys(newSlots).find(
-      (key) => newSlots[key]?.id === id
+      (key) => String(newSlots[key]?.id) === String(id)
     );
 
     if (slotKey) {
