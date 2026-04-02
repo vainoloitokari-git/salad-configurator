@@ -1,3 +1,4 @@
+import {useState} from "react";
 import type { Category, Ingredient } from "../types";
 import IngredientCard from "./IngredientCard";
 
@@ -12,18 +13,24 @@ export default function IngredientSection({
   ingredients,
   baseType,
 }: IngredientSectionProps) {
+  const [activeCategory, setActiveCategory] = useState<number | "all">("all");
+
   const filteredCategories = categories
     .filter((cat) => cat.id !== 6)
     .filter((cat) => (baseType !== null ? cat.base_type_id === baseType : true));
 
   const filteredIngredients = ingredients
-    .filter((item) => item.categoryId !== 6);
+    .filter((item) => item.categoryId !== 6)
+    .filter((item) => activeCategory === "all" ? true : item.categoryId === activeCategory);
 
   return (
     <section>
       <div className="category-buttons">
         {filteredCategories.map((cat) => (
-          <button key={cat.id} className="category-btn">
+          <button 
+          key={cat.id} 
+          className="category-btn" 
+          onClick={() => setActiveCategory(cat.id)}>
             {cat.name}
           </button>
         ))}
@@ -37,4 +44,3 @@ export default function IngredientSection({
     </section>
   );
 }
-
