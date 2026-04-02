@@ -11,6 +11,10 @@ function App() {
   const [bowls, setBowls] = useState<Bowl[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [ingredients, setIngredients] = useState<Ingredient[]>([])
+  
+  const [baseType, setBaseType] = useState<number | null>(null)
+  const [selectedBowl, setSelectedBowl] = useState<number | null>(null)
+
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -33,37 +37,46 @@ function App() {
 
     fetchData()
   }, [])
+
+  const filteredBowls =
+    baseType !== null
+      ? bowls.filter(b => b.base_type_id === baseType)
+      : bowls
+
+  const filteredCategories =
+    baseType !== null
+      ? categories.filter(c => c.base_type_id === baseType)
+      : categories
+
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
 
 
       <main className="flex-1 max-w-6xl w-full mx-auto p-6 flex flex-col gap-8 mt-4">
           <div className="grid grid-cols-1 lg:grid-cols-[256px_1fr_256px] gap-6 items-center">
-
+          
           <div className="flex justify-center">
-            <BowlSelection bowls={bowls} />
+            <BowlSelection 
+              bowls = {filteredBowls} 
+              setBowl = {setSelectedBowl} />
           </div>
 
           <div className="flex justify-center items-center">
-            <CenterBowl />
+            <CenterBowl
+              setBaseType = {setBaseType}
+              baseType = {baseType} />
           </div>
 
           <div className="flex justify-center">
             <BaseSelection ingredients = {ingredients} />
           </div>
-
         </div>
-
-<IngredientSection 
-  categories={categories} 
-  ingredients={ingredients} 
-/>
-      <SummaryBar />
-
-
-      </main>
-
       
+
+
+      <IngredientSection categories = {filteredCategories} ingredients = {ingredients} baseType = {baseType} />
+      <SummaryBar />
+      </main>
     </div>
   )
 }
