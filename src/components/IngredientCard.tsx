@@ -1,13 +1,17 @@
 import React from "react";
 import type { Ingredient } from "../types";
+import { useIngredientStore } from "../store/useIngredientStore";
 
 interface Props {
     ingredient: Ingredient;
 }
 
 export default function IngredientCard({ ingredient }: Props) {
+  const { addIngredient } = useIngredientStore();
     return (
+      
 <div
+onClick={() => addIngredient(ingredient)}
     style={{
     border: "1px solid #e5e7eb",
     borderRadius: "8px",
@@ -19,6 +23,7 @@ export default function IngredientCard({ ingredient }: Props) {
     gap: "10px",
     boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
     transition: "transform 0.1s ease, box-shadow 0.1s ease",
+    cursor: "pointer"
 }}
 >
   <h3 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 600 }}>
