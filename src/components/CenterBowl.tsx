@@ -1,9 +1,12 @@
 type Props = {
-  baseType: number | null
-  setBaseType: (id: number) => void
-}
+  baseType: number | null;
+  setBaseType: (id: number) => void;
+  slots: Record<string, any>;
+};
 
-export default function CenterBowl({ setBaseType }: Props) {
+export default function CenterBowl({ setBaseType, slots }: Props) {
+  const activeIngredients = Object.values(slots).filter(i => i !== null);
+
   return (
     <div className="flex flex-col items-center justify-center">
       
@@ -24,7 +27,9 @@ export default function CenterBowl({ setBaseType }: Props) {
 
       
       <div className="w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 flex items-center justify-center shadow-inner">
-        <span className="text-gray-500">Bowl content</span>
+        {activeIngredients.map((item: any) => (
+        <span key={item.id} className="px-3 py-1 bg-gray-200 rounded-full text-sm">{item.name}</span>
+        ))}
       </div>
 
       
@@ -36,3 +41,4 @@ export default function CenterBowl({ setBaseType }: Props) {
     </div>
   );
 }
+//<span className="text-gray-500">Bowl content</span>

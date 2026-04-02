@@ -15,7 +15,13 @@ function App() {
   const [baseType, setBaseType] = useState<number | null>(null)
   const [selectedBowl, setSelectedBowl] = useState<number | null>(null)
 
+  const [slots, setSlots] = useState<Record<string, Ingredient | null>>({});
+
   const [isLoading, setIsLoading] = useState(false)
+
+  function updateSlot(slotName: string, ingredient: Ingredient | null) {
+    setSlots((prev) => ({ ...prev, [slotName]: ingredient }));
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +70,8 @@ function App() {
           <div className="flex justify-center items-center">
             <CenterBowl
               setBaseType = {setBaseType}
-              baseType = {baseType} />
+              baseType = {baseType}
+              slots = {slots} />
           </div>
 
           <div className="flex justify-center">
@@ -74,7 +81,7 @@ function App() {
       
 
 
-      <IngredientSection categories = {filteredCategories} ingredients = {ingredients} baseType = {baseType} />
+      <IngredientSection categories = {filteredCategories} ingredients = {ingredients} baseType = {baseType} updateSlot = {updateSlot} />
       <SummaryBar />
       </main>
     </div>

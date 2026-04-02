@@ -6,12 +6,15 @@ type IngredientSectionProps = {
   categories: Category[];
   ingredients: Ingredient[];
   baseType: number | null;
+
+  updateSlot: (slotName: string, ingredient: Ingredient | null) => void;
 };
 
 export default function IngredientSection({
   categories,
   ingredients,
   baseType,
+  updateSlot,
 }: IngredientSectionProps) {
   const [activeCategory, setActiveCategory] = useState<number | "all">("all");
 
@@ -38,7 +41,10 @@ export default function IngredientSection({
 
       <div className="ingredient-grid">
         {filteredIngredients.map((item) => (
-          <IngredientCard key={item.id} ingredient={item} />
+          <IngredientCard 
+          key={item.id} 
+          ingredient={item} 
+          onClick={() => updateSlot("slot1", item)} />
         ))}
       </div>
     </section>
