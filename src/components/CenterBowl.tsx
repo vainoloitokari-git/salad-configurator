@@ -1,13 +1,18 @@
-export default function CenterBowl() {
+type Props = {
+  baseType: number | null
+  setBaseType: (id: number) => void
+}
+
+export default function CenterBowl({ setBaseType }: Props) {
   return (
     <div className="flex flex-col items-center justify-center">
-
       
       <div className="flex gap-3 mb-6 items-center">
-        <button className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">
+        <button onClick={() => setBaseType(1)} className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">
           Salaatti
         </button>
-        <button className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">
+
+        <button  onClick={() => setBaseType(2)} className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">
           Rahka
         </button>
 

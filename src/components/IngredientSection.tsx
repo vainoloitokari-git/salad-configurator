@@ -4,16 +4,20 @@ import IngredientCard from "./IngredientCard";
 type IngredientSectionProps = {
   categories: Category[];
   ingredients: Ingredient[];
+  baseType: number | null;
 };
 
 export default function IngredientSection({
   categories,
   ingredients,
+  baseType,
 }: IngredientSectionProps) {
-  const filteredCategories = categories.filter((cat) => cat.id !== 6);
-  const filteredIngredients = ingredients.filter(
-    (item) => item.categoryId !== 6
-  );
+  const filteredCategories = categories
+    .filter((cat) => cat.id !== 6)
+    .filter((cat) => (baseType !== null ? cat.base_type_id === baseType : true));
+
+  const filteredIngredients = ingredients
+    .filter((item) => item.categoryId !== 6);
 
   return (
     <section>

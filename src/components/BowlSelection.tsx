@@ -3,9 +3,10 @@ import type { Bowl } from "../types";
 
 type BowlSelectionProps = {
   bowls: Bowl[];
+  setBowl: (id: number) => void;
 };
 
-export default function BowlSelection({ bowls}: BowlSelectionProps) {
+export default function BowlSelection({ bowls, setBowl }: BowlSelectionProps) {
   const [selected, setSelected] = useState<Bowl | null>(null);
 
   return (
@@ -20,7 +21,10 @@ export default function BowlSelection({ bowls}: BowlSelectionProps) {
       {bowls.map((bowl) => (
         <button
           key={bowl.id}
-          onClick={() => setSelected(bowl)}
+          onClick={() => {
+            setSelected(bowl);
+            setBowl(bowl.id);
+          }}
           className={`flex items-center gap-4 cursor-pointer transition ${
             selected && selected.id === bowl.id
             ? "text-lime-400" 
