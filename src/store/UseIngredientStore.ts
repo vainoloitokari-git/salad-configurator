@@ -43,9 +43,38 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
         selectedBowl: null,
         })),
 
-  addIngredient: (item) => {
-    console.warn("addIngredient not implemented yet", item);
-  },
+  addIngredient: (item) =>
+  set((state) => {
+    // 1) BASE (categoryId === 6)
+    if (item.categoryId === 6) {
+      return {
+        slots: {
+          ...state.slots,
+          base: item,
+        },
+      };
+    }
+
+
+    const slotCount = state.selectedBowl?.slot_count ?? 0;
+
+    // Etsi ensimmäinen tyhjä slotti
+    for (let i = 1; i <= slotCount; i++) {
+      const key = `slot-${i}`;
+
+      if (!state.slots[key]) {
+        return {
+          slots: {
+            ...state.slots,
+            [key]: item,
+          },
+        };
+      }
+    }
+
+    return {};
+  })
+,
 
 removeIngredient: (id) =>
     set((state) => {
