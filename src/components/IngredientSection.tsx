@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import type { Category, Ingredient } from "../types";
 import IngredientCard from "./IngredientCard";
 
@@ -17,30 +17,46 @@ export default function IngredientSection({
 
   const filteredCategories = categories
     .filter((cat) => cat.id !== 6)
-    .filter((cat) => (baseType !== null ? cat.base_type_id === baseType : true));
+    .filter((cat) =>
+      baseType !== null ? cat.base_type_id === baseType : true
+    );
 
   const filteredIngredients = ingredients
     .filter((item) => item.categoryId !== 6)
-    .filter((item) => activeCategory === "all" ? true : item.categoryId === activeCategory);
+    .filter((item) =>
+      activeCategory === "all" ? true : item.categoryId === activeCategory
+    );
 
   return (
-    <section>
-      <div className="category-buttons">
-        {filteredCategories.map((cat) => (
-          <button 
-          key={cat.id} 
-          className="category-btn" 
-          onClick={() => setActiveCategory(cat.id)}>
-            {cat.name}
-          </button>
-        ))}
-      </div>
+<section className="space-y-6">
 
-      <div className="ingredient-grid">
-        {filteredIngredients.map((item) => (
-          <IngredientCard key={item.id} ingredient={item} />
-        ))}
-      </div>
-    </section>
+  {/* CATEGORY BUTTONS */}
+<div className="bg-zinc-800 p-4 rounded-2xl flex gap-3 flex-wrap">
+  {filteredCategories.map((cat) => (
+    <button
+      key={cat.id}
+      onClick={() => setActiveCategory(cat.id)}
+      className={`
+        px-4 py-2 rounded-full font-medium text-black
+        ${activeCategory === cat.id
+          ? "bg-lime-400"
+          : "bg-lime-300 hover:bg-lime-200"}
+      `}
+    >
+      {cat.name}
+    </button>
+  ))}
+</div>
+
+
+  {/* INGREDIENT GRID */}
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    {filteredIngredients.map((item) => (
+      <IngredientCard key={item.id} ingredient={item} />
+    ))}
+  </div>
+
+</section>
+
   );
 }
