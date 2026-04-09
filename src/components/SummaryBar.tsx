@@ -1,22 +1,48 @@
+import { useIngredientStore } from "../store/useIngredientStore";
+
+interface Ingredient {
+  id: string | number;
+  name: string;
+}
 
 export default function SummaryBar() {
+  const slots = useIngredientStore((state: { slots: any; }) => state.slots);
+  const removeIngredient = useIngredientStore((state: { removeIngredient: any; }) => state.removeIngredient);
+  const activeIngredients = Object.values(slots).filter(
+    (item): item is Ingredient => item !== null
+  );
+
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-8 text-white w-full flex flex-col md:flex-row gap-8 shadow-xl">
-      
-      {/* Left: Selected ingredients */}
       <div className="flex-1 bg-[#3a3a3a] rounded-3xl p-6 min-h-[150px] shadow-inner">
         <h3 className="font-semibold mb-4">Valitut ainekset</h3>
 
-        {/* Placeholder content */}
-        <div className="text-gray-400 text-sm">
-          Ei valittuja ainesosia
-        </div>
+        {activeIngredients.length === 0 ? (
+          <div className="text-gray-400 text-sm">
+            Ei valittuja ainesosia
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-3">
+            {activeIngredients.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center gap-2 bg-zinc-700 px-4 py-2 rounded-full shadow-md"
+              >
+                <span>{item.name}</span>
+
+                <button
+                  onClick={() => removeIngredient(item.id)}
+                  className="text-red-300 hover:text-red-400 font-bold"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Right: Totals */}
       <div className="flex-1 flex flex-col justify-center items-center gap-6">
-        
-        {/* Weight */}
         <div className="text-center">
           <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md text-center">
             0 g
@@ -24,7 +50,6 @@ export default function SummaryBar() {
           <div className="text-sm text-gray-300">Paino</div>
         </div>
 
-        {/* Price */}
         <div className="text-center">
           <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md text-center">
             0,00 €
