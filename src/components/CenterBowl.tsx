@@ -1,3 +1,5 @@
+import { useIngredientStore } from "../store/UseIngredientStore"
+
 type Ingredient = {
   id: number
   name: string
@@ -13,7 +15,9 @@ type Props = {
   slots: Slots
 }
 
+
 export default function CenterBowl({ setBaseType, slots }: Props) {
+const selectedBowl = useIngredientStore((state) => state.selectedBowl);
 
   const activeIngredients = Object.values(slots).filter(
     (i): i is Ingredient => i !== null
@@ -51,7 +55,9 @@ export default function CenterBowl({ setBaseType, slots }: Props) {
       
       <div className="mt-4 flex flex-col items-center text-gray-600">
         <span className="text-lg font-medium">100 g / 1,99 €</span>
-        <span className="text-sm">500 ml</span>
+        <span className="text-sm">
+        {selectedBowl ? selectedBowl.volume : 0} ml
+        </span>
       </div>
 
     </div>

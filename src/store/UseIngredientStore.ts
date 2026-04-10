@@ -5,6 +5,7 @@ import type { Ingredient } from "../types";
 export interface Bowl {
     id: string;
     name: string;
+    volume: number;
 }
 
 interface IngredientStore {
