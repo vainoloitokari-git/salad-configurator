@@ -14,6 +14,7 @@ export default function IngredientSection({
   baseType,
 }: IngredientSectionProps) {
   const [activeCategory, setActiveCategory] = useState<number | "all">("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredCategories = categories
     .filter((cat) => cat.id !== 6)
@@ -25,6 +26,9 @@ export default function IngredientSection({
     .filter((item) => item.categoryId !== 6)
     .filter((item) =>
       activeCategory === "all" ? true : item.categoryId === activeCategory
+    )
+    .filter((ingredient) =>
+    ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
   return (
