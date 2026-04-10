@@ -1,0 +1,27 @@
+import type { ReactNode } from "react";
+
+type ModalProps = {
+    isOpen: boolean;
+    onClose: () => void;
+    children: ReactNode; 
+};
+
+const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+  if (!isOpen) return null;
+  return (
+    <div
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-xl p-6 shadow-xl max-w-md w-full"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export default Modal;
+
