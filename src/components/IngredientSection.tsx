@@ -6,14 +6,23 @@ type IngredientSectionProps = {
   categories: Category[];
   ingredients: Ingredient[];
   baseType: number | null;
+  setSlots: React.Dispatch<React.SetStateAction<{ [key: string]: Ingredient | null}>>;
 };
 
 export default function IngredientSection({
   categories,
   ingredients,
   baseType,
+  setSlots,
 }: IngredientSectionProps) {
   const [activeCategory, setActiveCategory] = useState<number | "all">("all");
+
+  const handleSelect = (ingredient: Ingredient) => {
+    setSlots((prev) => ({
+      ...prev,
+      [ingredient.id]: ingredient,
+    }));
+  };
 
   const filteredCategories = categories
     .filter((cat) => cat.id !== 6)
@@ -30,7 +39,6 @@ export default function IngredientSection({
   return (
 <section className="space-y-6">
 
-  {/* CATEGORY BUTTONS */}
 <div className="bg-zinc-800 p-4 rounded-2xl flex gap-3 flex-wrap">
   {filteredCategories.map((cat) => (
     <button
@@ -48,11 +56,12 @@ export default function IngredientSection({
   ))}
 </div>
 
-
-  {/* INGREDIENT GRID */}
   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
     {filteredIngredients.map((item) => (
-      <IngredientCard key={item.id} ingredient={item} />
+      <IngredientCard 
+      key={item.id} 
+      ingredient={item}
+      onClick={() => handleSelect(item)} />
     ))}
   </div>
 
