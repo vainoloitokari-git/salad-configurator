@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Configurator from "./pages/Configurator";
 import Community from "./pages/Community";
 import Print from "./pages/Print";
-import LoginModal from "./components/LoginModal";
+
 
 
 
