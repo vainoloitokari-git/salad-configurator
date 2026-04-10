@@ -18,6 +18,7 @@ type Props = {
 
 export default function CenterBowl({ setBaseType, slots }: Props) {
 const selectedBowl = useIngredientStore((state) => state.selectedBowl);
+const clearSection = useIngredientStore((state) => state.clearSelection);
 
   const activeIngredients = Object.values(slots).filter(
     (i): i is Ingredient => i !== null
@@ -36,8 +37,27 @@ const selectedBowl = useIngredientStore((state) => state.selectedBowl);
         </button>
 
         <div className="flex gap-2">
-          <div className="w-6 h-6 bg-gray-300 rounded" />
-          <div className="w-6 h-6 bg-gray-300 rounded" />
+          <button onClick={() => {
+            const confirmed = window.confirm(
+              "Are you sure you want to empty the bowl?"
+            );
+            if (confirmed) {
+              clearSection();
+            }
+          }}
+          className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded hover:bg-gray-400">
+            🗑️
+          </button>
+          <button 
+          onClick={() => alert("Feature coming soon!")}
+          className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded hover:bg-gray-400">
+          ↩️
+          </button>
+
+          <button onClick={() => alert("Feature coming soon!")}
+          className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded hover:bg-gray-400">
+            💾
+          </button>
         </div>
       </div>
 
