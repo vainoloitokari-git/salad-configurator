@@ -15,6 +15,8 @@ function App() {
   const [baseType, setBaseType] = useState<number | null>(null)
   const [selectedBowl, setSelectedBowl] = useState<number | null>(null)
 
+  const [slots, setSlots] = useState<{ [key: string]: Ingredient | null}>({})
+
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -64,7 +66,8 @@ function App() {
           <div className="flex justify-center items-center">
             <CenterBowl
               setBaseType = {setBaseType}
-              baseType = {baseType} />
+              baseType = {baseType} 
+              slots = {slots}/>
           </div>
 
           <div className="flex justify-center">
@@ -74,7 +77,11 @@ function App() {
       
 
 
-      <IngredientSection categories = {filteredCategories} ingredients = {ingredients} baseType = {baseType} />
+      <IngredientSection 
+      categories = {filteredCategories} 
+      ingredients = {ingredients} 
+      baseType = {baseType}
+      setSlots = {setSlots} />
       <SummaryBar />
       </main>
     </div>
