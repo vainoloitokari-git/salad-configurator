@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import LoginModal from "./LoginModal"; 
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   return (
     <div className="bg-zinc-800 text-white w-full h-32 flex justify-between items-start px-8 pt-4 relative">
+
       <Link
         to="/"
         className="w-24 h-24 rounded-full border-4 border-[#A2D135] flex items-center justify-center flex-col -mt-2 bg-zinc-800 shadow-lg"
@@ -33,18 +36,23 @@ const Header = () => {
             <Link to="/community" className="font-semibold hover:underline">
               Saved recipes
             </Link>
-            <Link to="/profile" className="font-semibold hover:underline">
-              Profile
-            </Link>
-            <Link to="/settings" className="font-semibold hover:underline">
-              Settings
-            </Link>
+
+            <button
+              onClick={() => setIsLoginOpen(true)}
+              className="font-semibold hover:underline text-left"
+            >
+              Kirjaudu sisään
+            </button>
           </div>
         )}
       </div>
+
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+      />
     </div>
   );
 };
 
 export default Header;
- 
