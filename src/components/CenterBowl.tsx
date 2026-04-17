@@ -1,28 +1,19 @@
-import { useIngredientStore } from "../store/UseIngredientStore"
+import { useIngredientStore } from "../store/useIngredientStore"
+import type { Ingredient } from "../types";
 
-type Ingredient = {
-  id: number
-  name: string
-}
-
-type Slots = {
-  [key: string]: Ingredient | null
-}
 
 type Props = {
-  baseType: number | null
-  setBaseType: (id: number) => void
-  slots: Slots
+  baseType: number | null;
+  setBaseType: (id: number) => void;
 }
 
+export default function CenterBowl({ setBaseType }: Props) {
+  const slots = useIngredientStore((state) => state.slots);
 
-export default function CenterBowl({ setBaseType, slots }: Props) {
-const selectedBowl = useIngredientStore((state) => state.selectedBowl);
-const clearSection = useIngredientStore((state) => state.clearSelection);
+  const selectedBowl = useIngredientStore((state) => state.selectedBowl);
+  const clearSection = useIngredientStore((state) => state.clearSelection);
 
-  const activeIngredients = Object.values(slots).filter(
-    (i): i is Ingredient => i !== null
-  );
+  const activeIngredients = Object.values(slots).filter(Boolean) as Ingredient[];
 
   return (
     <div className="flex flex-col items-center justify-center">

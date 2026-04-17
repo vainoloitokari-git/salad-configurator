@@ -44,9 +44,16 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
         selectedBowl: null,
         })),
 
-  addIngredient: (item) => {
-    console.warn("addIngredient not implemented yet", item);
-  },
+  addIngredient: (item) => 
+    set((state) => {
+      console.log("ADD", item);
+      return {
+        slots: {
+          ...state.slots,
+          [item.id]: item,
+        },
+      };
+    }),
 
 removeIngredient: (id) =>
     set((state) => {

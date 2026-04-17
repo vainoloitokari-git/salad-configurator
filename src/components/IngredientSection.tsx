@@ -1,28 +1,26 @@
 import { useState } from "react";
 import type { Category, Ingredient } from "../types";
 import IngredientCard from "./IngredientCard";
+import { useIngredientStore } from "../store/useIngredientStore";
 
 type IngredientSectionProps = {
   categories: Category[];
   ingredients: Ingredient[];
   baseType: number | null;
-  setSlots: React.Dispatch<React.SetStateAction<{ [key: string]: Ingredient | null}>>;
 };
 
 export default function IngredientSection({
   categories,
   ingredients,
   baseType,
-  setSlots,
 }: IngredientSectionProps) {
   const [activeCategory, setActiveCategory] = useState<number | "all">("all");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const addIngredient = useIngredientStore((state) => state.addIngredient);
+
   const handleSelect = (ingredient: Ingredient) => {
-    setSlots((prev) => ({
-      ...prev,
-      [ingredient.id]: ingredient,
-    }));
+    addIngredient(ingredient);
   };
 
   const filteredCategories = categories
@@ -68,8 +66,6 @@ export default function IngredientSection({
       onClick={() => handleSelect(item)} />
     ))}
   </div>
-
 </section>
-
   );
 }
