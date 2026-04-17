@@ -4,8 +4,24 @@ import { calculateTotalWeight } from "./calculation";
 describe("calculateTotalWeight", () => {
   it("calculates ingredient weights correctly", () => {
     const testIngredients = [
-      { name: "Flour", weight: 50 },
-      { name: "Sugar", weight: 100 },
+      {
+        name: "Flour",
+        weight_grams: 50,
+        categoryId: 1,
+        id: 1,
+        diets: [],
+        image_url: "1",
+        barcode_url: "",
+      },
+      {
+        name: "Sugar",
+        weight_grams: 100,
+        categoryId: 1,
+        id: 2,
+        diets: [],
+        image_url: "1",
+        barcode_url: "",
+      },
     ];
 
     const result = calculateTotalWeight(testIngredients);
