@@ -22,7 +22,7 @@ export interface Category {
 export interface Ingredient extends BaseType {
   categoryId: number;
   diets: string[];
-  weight_grams?: number;
+  weight_grams: number;
 }
 
 export interface User {

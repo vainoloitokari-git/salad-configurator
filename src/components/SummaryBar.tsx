@@ -1,21 +1,25 @@
+import { useMemo } from "react";
 import { useIngredientStore } from "../store/useIngredientStore";
-
-interface Ingredient {
-  id: string | number;
-  name: string;
-}
+import { calculateTotalWeight } from "../utils/calculation";
+import type { Ingredient } from "../types";
 
 export default function SummaryBar() {
-  const slots = useIngredientStore((state: { slots: any; }) => state.slots);
-  const removeIngredient = useIngredientStore((state: { removeIngredient: any; }) => state.removeIngredient);
-  const activeIngredients = Object.values(slots).filter(
-    (item): item is Ingredient => item !== null
-  );
+  const slots = useIngredientStore((state) => state.slots ?? {});
+  const removeIngredient = useIngredientStore((state) => state.removeIngredient);
 
-  console.log("SUMMARY SLOTS:", slots);
+  const activeIngredients = useMemo(() => {
+    return Object.values(slots).filter(
+      (item): item is Ingredient => item != null
+    );
+  }, [slots]);
+
+  const totalWeight = useMemo(() => {
+    return calculateTotalWeight(activeIngredients);
+  }, [activeIngredients]);
 
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-8 text-white w-full flex flex-col md:flex-row gap-8 shadow-xl">
+
       <div className="flex-1 bg-[#3a3a3a] rounded-3xl p-6 min-h-[150px] shadow-inner">
         <h3 className="font-semibold mb-4">Valitut ainekset</h3>
 
@@ -47,21 +51,21 @@ export default function SummaryBar() {
       <div className="flex-1 flex flex-col justify-center items-center gap-6">
 
         <div className="text-center">
-          <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md text-center">
+          <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md">
             {activeIngredients.length} kpl
           </div>
           <div className="text-sm text-gray-300">Ainesosat</div>
         </div>
 
         <div className="text-center">
-          <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md text-center">
-            0 g
+          <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md">
+            {totalWeight} g
           </div>
           <div className="text-sm text-gray-300">Paino</div>
         </div>
 
         <div className="text-center">
-          <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md text-center">
+          <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md">
             0,00 €
           </div>
           <div className="text-sm text-gray-300">Hinta</div>
