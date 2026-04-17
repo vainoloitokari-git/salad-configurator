@@ -1,18 +1,24 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import LoginModal from "./LoginModal"; 
+import { useAuthStore } from "../store/useAuthStore";
 
 const Header = () => {
+  const { userName, logout } = useAuthStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    localStorage.clear();
+  };
 
   return (
     <div className="bg-zinc-800 text-white w-full h-32 flex justify-between items-start px-8 pt-4 relative">
 
       <Link
         to="/"
-        className="w-24 h-24 rounded-full border-4 border-[#A2D135] flex items-center justify-center flex-col -mt-2 bg-zinc-800 shadow-lg"
-      >
+        className="w-24 h-24 rounded-full border-4 border-[#A2D135] flex items-center justify-center flex-col -mt-2 bg-zinc-800 shadow-lg">
         <span>Fresh Food Factory</span>
         <span>FRESSE</span>
       </Link>
@@ -24,8 +30,7 @@ const Header = () => {
       <div className="relative">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="flex flex-col gap-1 p-2"
-        >
+          className="flex flex-col gap-1 p-2">
           <span className="w-8 h-1 bg-[#A2D135] rounded"></span>
           <span className="w-8 h-1 bg-[#A2D135] rounded"></span>
           <span className="w-8 h-1 bg-[#A2D135] rounded"></span>
@@ -37,22 +42,29 @@ const Header = () => {
               Saved recipes
             </Link>
 
-            <button
-              onClick={() => setIsLoginOpen(true)}
-              className="font-semibold hover:underline text-left"
-            >
-              Kirjaudu sisään
-            </button>
+            {userName ? (
+              <>
+                <span className="font-semibold">Hello, {userName}</span>
+                <button
+                  onClick={handleLogout}
+                  className="font-semibold hover:underline text-left">
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => setIsLoginOpen(true)}
+                  className="font-semibold hover:underline text-left">
+                  Kirjaudu sisään
+                </button>
+              )}
           </div>
         )}
       </div>
-
       <LoginModal
         isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-      />
+        onClose={() => setIsLoginOpen(false)}/>
     </div>
   );
 };
-
 export default Header;
