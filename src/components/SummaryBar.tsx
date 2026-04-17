@@ -1,16 +1,19 @@
 import { useIngredientStore } from "../store/useIngredientStore";
+import { calculateTotalWeight } from "../utils/calculation";
 
 interface Ingredient {
   id: string | number;
   name: string;
+  weight: number;
 }
 
 export default function SummaryBar() {
   const slots = useIngredientStore((state: { slots: any; }) => state.slots);
   const removeIngredient = useIngredientStore((state: { removeIngredient: any; }) => state.removeIngredient);
   const activeIngredients = Object.values(slots).filter(
-    (item): item is Ingredient => item !== null
-  );
+    (item): item is Ingredient => item !== null)
+    const totalWeight = calculateTotalWeight(activeIngredients);
+    ;
 
   console.log("SUMMARY SLOTS:", slots);
 
@@ -55,7 +58,7 @@ export default function SummaryBar() {
 
         <div className="text-center">
           <div className="bg-white text-black font-black text-2xl py-3 w-32 rounded-full mb-2 shadow-md text-center">
-            0 g
+          {totalWeight} g
           </div>
           <div className="text-sm text-gray-300">Paino</div>
         </div>
