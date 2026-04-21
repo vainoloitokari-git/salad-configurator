@@ -1,6 +1,8 @@
 import React from "react";
 import type { Ingredient } from "../types";
 import { useIngredientStore } from "../store/useIngredientStore";
+import { usePriceStore } from "../store/usePriceStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 interface Props {
     ingredient: Ingredient;
@@ -9,6 +11,9 @@ interface Props {
 
 export default function IngredientCard({ ingredient, onClick, }: Props) {
   const { addIngredient } = useIngredientStore();
+  const { prices } = usePriceStore();
+  const { token } = useAuthStore();
+
   const handleClick = () => {
     if(onClick) {
       onClick();
@@ -16,6 +21,8 @@ export default function IngredientCard({ ingredient, onClick, }: Props) {
       addIngredient(ingredient);
     }
   };
+
+  const priceItem = prices.find(p => p.item_id === ingredient.id);
     
   return (
     <div
@@ -30,6 +37,13 @@ export default function IngredientCard({ ingredient, onClick, }: Props) {
           key={diet}
           className="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-medium">{diet}</span>
         ))}
+      </div>
+      
+      <div className="text-sm font-medium mt-auto">
+        {token
+          ? (priceItem ? `+ ${priceItem.price.toFixed(2)} €` : null)
+          : "Login to see price"
+        }
       </div>
     </div>
   );

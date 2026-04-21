@@ -1,17 +1,10 @@
 import { create } from "zustand";
-import { getPrices} from "../services/api";
-
-export interface PriceListItem {
-
-    id: string;
-    name: string;
-    price: number;
-}
+import { getPrices } from "../services/api";
+import type { PriceListItem } from "../types";
 
 interface PriceStore {
-    
-    prices: PriceListItem[];
-    fetchPrices: (token: string) => Promise<void>;
+  prices: PriceListItem[];
+  fetchPrices: (token: string) => Promise<void>;
 }
 
 export const usePriceStore = create<PriceStore>((set) => ({
