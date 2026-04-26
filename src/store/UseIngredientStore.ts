@@ -29,11 +29,11 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
   setBowl: (bowl) => set({ selectedBowl: bowl }),
 
   clearSelection: () =>
-    set((state) => ({
+    set({
       slots: {},
-      baseType: state.baseType,
-      selectedBowl: state.selectedBowl,
-    })),
+      baseType: 1,
+      selectedBowl: null,
+    }),
 
   addIngredient: (item) =>
     set((state) => ({

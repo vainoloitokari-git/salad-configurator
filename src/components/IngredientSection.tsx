@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Category, Ingredient } from "../types";
 import IngredientCard from "./IngredientCard";
-import { useIngredientStore } from "../store/useIngredientStore";
+import { useIngredientStore } from "../store/UseIngredientStore";
 
 type IngredientSectionProps = {
   categories: Category[];
@@ -35,37 +35,39 @@ export default function IngredientSection({
       activeCategory === "all" ? true : item.categoryId === activeCategory
     )
     .filter((ingredient) =>
-    ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
   return (
-<section className="space-y-6">
+    <section className="space-y-6">
+      <div className="bg-zinc-800 p-4 rounded-2xl flex gap-3 flex-wrap">
+        {filteredCategories.map((cat) => (
+          <button
+            key={cat.id}
+            onClick={() => setActiveCategory(cat.id)}
+            className={`
+              px-4 py-2 rounded-full font-medium text-black
+              ${
+                activeCategory === cat.id
+                  ? "bg-lime-400"
+                  : "bg-lime-300 hover:bg-lime-200"
+              }
+            `}
+          >
+            {cat.name}
+          </button>
+        ))}
+      </div>
 
-<div className="bg-zinc-800 p-4 rounded-2xl flex gap-3 flex-wrap">
-  {filteredCategories.map((cat) => (
-    <button
-      key={cat.id}
-      onClick={() => setActiveCategory(cat.id)}
-      className={`
-        px-4 py-2 rounded-full font-medium text-black
-        ${activeCategory === cat.id
-          ? "bg-lime-400"
-          : "bg-lime-300 hover:bg-lime-200"}
-      `}
-    >
-      {cat.name}
-    </button>
-  ))}
-</div>
-
-  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    {filteredIngredients.map((item) => (
-      <IngredientCard 
-      key={item.id} 
-      ingredient={item}
-      onClick={() => handleSelect(item)} />
-    ))}
-  </div>
-</section>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {filteredIngredients.map((item) => (
+          <IngredientCard
+            key={item.id}
+            ingredient={item}
+            onClick={() => handleSelect(item)}
+          />
+        ))}
+      </div>
+    </section>
   );
 }

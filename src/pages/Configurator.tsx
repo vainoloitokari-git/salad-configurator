@@ -1,91 +1,57 @@
-import { useEffect, useState } from "react"
-import CenterBowl from "../components/CenterBowl"
-import BowlSelection from "../components/BowlSelection"
-import BaseSelection from "../components/BaseSelection"
-import IngredientSection from "../components/IngredientSection"
-import SummaryBar from "../components/SummaryBar"
-import SaveRecipeModal from "../components/SaveRecipeModal"
+import { useEffect, useState } from "react";
+import CenterBowl from "../components/CenterBowl";
+import BowlSelection from "../components/BowlSelection";
+import BaseSelection from "../components/BaseSelection";
+import IngredientSection from "../components/IngredientSection";
+import SummaryBar from "../components/SummaryBar";
+import SaveRecipeModal from "../components/SaveRecipeModal";
 
 import { 
   getBowls, 
   getCategories, 
   getIngredients, 
   getBaseIngredients 
-} from "../services/api"
+} from "../services/api";
 
-import { useAuthStore } from "../store/useAuthStore"
+import { useAuthStore } from "../store/useAuthStore";
 
-import type { Bowl, Category, Ingredient } from "../types"
+import type { Bowl, Category, Ingredient } from "../types";
 
 function Configurator() {
-  const [bowls, setBowls] = useState<Bowl[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
-  const [ingredients, setIngredients] = useState<Ingredient[]>([])
-  const [baseIngredients, setBaseIngredients] = useState<Ingredient[]>([])
-  const [baseType, setBaseType] = useState<number | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [bowls, setBowls] = useState<Bowl[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [baseIngredients, setBaseIngredients] = useState<Ingredient[]>([]);
+  const [baseType, setBaseType] = useState<number | null>(1);
 
-  const token = useAuthStore((s) => s.token)
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
 
-  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false)
+  const token = useAuthStore((s) => s.token);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true)
       try {
-        const bowlsData = await getBowls()
-        const categoriesData = await getCategories()
-        const ingredientsData = await getIngredients()
-        const baseIngredientsData = await getBaseIngredients()
+        const bowlsData = await getBowls();
+        const categoriesData = await getCategories();
+        const ingredientsData = await getIngredients();
+        const baseIngredientsData = await getBaseIngredients();
 
-        setIngredients(ingredientsData)
-        setBowls(bowlsData)
-        setCategories(categoriesData)
-        setBaseIngredients(baseIngredientsData)
+        setIngredients(ingredientsData);
+        setBowls(bowlsData);
+        setCategories(categoriesData);
+        setBaseIngredients(baseIngredientsData);
       } catch (error) {
-        console.error("Error fetching data:", error)
-      } finally {
-        setIsLoading(false)
+        console.error("Error fetching data:", error);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
-
-  useEffect(() => {
-    if (baseType === null) return
-
-    const fetchCategoriesByType = async () => {
-      try {
-        const categoriesData = await getCategories(baseType)
-        setCategories(categoriesData)
-      } catch (error) {
-        console.error("Error fetching categories by type:", error)
-      }
-    }
-
-    fetchCategoriesByType()
-  }, [baseType])
-
-  useEffect(() => {
-    if (baseType === null) return
-
-    const fetchBowlsByType = async () => {
-      try {
-        const bowlsData = await getBowls(baseType)
-        setBowls(bowlsData)
-      } catch (error) {
-        console.error("Error fetching bowls by type:", error)
-      }
-    }
-
-    fetchBowlsByType()
-  }, [baseType])
+    fetchData();
+  }, []);
 
   const filteredCategories =
     baseType !== null
-      ? categories.filter(c => c.base_type_id === baseType)
-      : categories
+      ? categories.filter((c) => c.base_type_id === baseType)
+      : categories;
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
@@ -98,10 +64,10 @@ function Configurator() {
           </div>
 
           <div className="flex justify-center items-center">
-            <CenterBowl
-              setBaseType={setBaseType}
+            <CenterBowl 
               baseType={baseType}
-              onSaveClick={() => setIsSaveModalOpen(true)}
+              setBaseType={setBaseType}
+              onSaveClick={() => setIsSaveModalOpen(true)} // ← TÄRKEÄ
             />
           </div>
 
@@ -111,8 +77,8 @@ function Configurator() {
         </div>
 
         <IngredientSection 
-          categories={filteredCategories} 
-          ingredients={ingredients} 
+          categories={filteredCategories}
+          ingredients={ingredients}
           baseType={baseType}
         />
 
@@ -122,10 +88,10 @@ function Configurator() {
       <SaveRecipeModal
         isOpen={isSaveModalOpen}
         onClose={() => setIsSaveModalOpen(false)}
-        token={token ?? ''}
+        token={token}
       />
     </div>
-  )
+  );
 }
 
-export default Configurator
+export default Configurator;

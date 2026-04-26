@@ -18,43 +18,57 @@ export default function SaveRecipeModal({
   const [isPublic, setIsPublic] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const slots = useIngredientStore((s) => s.slots);
   const selectedBowl = useIngredientStore((s) => s.selectedBowl);
+  const clearSelection = useIngredientStore((s) => s.clearSelection);
+
   const ingredientIds = Object.values(slots)
     .filter((i) => i !== null)
     .map((i) => i!.id);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!selectedBowl) {
-      setError("Select a bowl before saving.");
-      return;
-    }
+  if (!selectedBowl) {
+    setError("Select a bowl before saving.");
+    return;
+  }
 
-    const recipeData = {
-      name,
-      isPublic,
-      bowlId: selectedBowl.id,
-      ingredientIds,
-    };
-
-    try {
-      setLoading(true);
-      setError("");
-
-      await saveRecipe(token, recipeData);
-
-      onClose();
-      setName("");
-      setIsPublic(false);
-    } catch (err) {
-      console.error(err);
-      setError("Saving failed.");
-    } finally {
-      setLoading(false);
-    }
+  const recipeData = {
+    name,
+    isPublic,
+    bowlId: selectedBowl.id,
+    ingredientIds,
   };
+
+  try {
+    setLoading(true);
+    setError("");
+
+    await saveRecipe(token, recipeData);
+
+    // 🔥 Näytetään ilmoitus ENSIN
+    alert("Recipe saved!");
+
+    // 🔥 Tyhjennetään kulho
+    clearSelection();
+
+    // 🔥 Suljetaan modal
+    onClose();
+
+    // 🔥 Nollataan lomake
+    setName("");
+    setIsPublic(false);
+
+  } catch (err) {
+    console.error(err);
+    setError("Saving failed.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Save Recipe">

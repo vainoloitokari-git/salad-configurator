@@ -1,11 +1,11 @@
-import { useIngredientStore } from "../store/UseIngredientStore"
+import { useIngredientStore } from "../store/UseIngredientStore";
 import type { Ingredient } from "../types";
 
 type Props = {
   baseType: number | null;
   setBaseType: (id: number) => void;
-  onSaveClick?: () => void;   // ← LISÄTTY
-}
+  onSaveClick: () => void; // ← TÄRKEÄ
+};
 
 export default function CenterBowl({ setBaseType, onSaveClick }: Props) {
   const slots = useIngredientStore((state) => state.slots);
@@ -44,7 +44,7 @@ export default function CenterBowl({ setBaseType, onSaveClick }: Props) {
             ↩️
           </button>
 
-          {/* SAVE BUTTON → avaa modalin */}
+          {/* 🔥 TÄSSÄ ON TALLENNUSNAPPI */}
           <button 
             onClick={onSaveClick}
             className="w-10 h-10 flex items-center justify-center bg-gray-300 rounded hover:bg-gray-400"
