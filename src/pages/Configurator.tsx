@@ -31,14 +31,10 @@ function Configurator() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const bowlsData = await getBowls();
-        const categoriesData = await getCategories();
         const ingredientsData = await getIngredients();
         const baseIngredientsData = await getBaseIngredients();
 
         setIngredients(ingredientsData);
-        setBowls(bowlsData);
-        setCategories(categoriesData);
         setBaseIngredients(baseIngredientsData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -48,10 +44,25 @@ function Configurator() {
     fetchData();
   }, []);
 
-  const filteredCategories =
-    baseType !== null
-      ? categories.filter((c) => c.base_type_id === baseType)
-      : categories;
+  useEffect(() => {
+  if (!baseType) return;
+
+  const fetchByType = async () => {
+    try {
+      const [bowlsData, categoriesData] = await Promise.all([
+        getBowls(baseType),
+        getCategories(baseType),
+      ]);
+
+      setBowls(bowlsData);
+      setCategories(categoriesData);
+    } catch (err) {
+      console.error("Error fetching type-specific data:", err);
+    }
+  };
+
+  fetchByType();
+}, [baseType]);
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
@@ -76,11 +87,11 @@ function Configurator() {
           </div>
         </div>
 
-        <IngredientSection 
-          categories={filteredCategories}
-          ingredients={ingredients}
-          baseType={baseType}
-        />
+       <IngredientSection 
+        categories={categories}
+        ingredients={ingredients}
+        baseType={baseType}
+      />
 
         <SummaryBar />
       </main>
@@ -91,6 +102,7 @@ function Configurator() {
         token={token}
       />
     </div>
+    
   );
 }
 
