@@ -9,8 +9,7 @@ type Props = {
 };
 
 export default function BaseSelection({ ingredients }: Props) {
-  console.log(ingredients);
-  const baseItems = ingredients.filter((ingredient) => ingredient.categoryId === 6);
+  const baseItems = ingredients;
 
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-6 text-white w-64 flex flex-col gap-4 shadow-lg">

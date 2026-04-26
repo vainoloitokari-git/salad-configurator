@@ -2,10 +2,14 @@ const BASE_URL = "https://fresse-api.onrender.com/api";
 
 const getToken = () => localStorage.getItem("token");
 
-export async function getBowls() {
+export async function getBowls(typeId?: number) {
   const token = getToken();
 
-  const res = await fetch(`${BASE_URL}/bowls`, {
+  const url = typeId
+    ? `${BASE_URL}/bowls?type_id=${typeId}`
+    : `${BASE_URL}/bowls`;
+
+  const res = await fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -18,10 +22,15 @@ export async function getBowls() {
   return res.json();
 }
 
-export async function getCategories() {
+
+export async function getCategories(typeId?: number) {
   const token = getToken();
 
-  const res = await fetch(`${BASE_URL}/Categories`, {
+  const url = typeId
+    ? `${BASE_URL}/categories?type_id=${typeId}`
+    : `${BASE_URL}/categories`;
+
+  const res = await fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -34,17 +43,34 @@ export async function getCategories() {
   return res.json();
 }
 
+
 export async function getIngredients() {
   const token = getToken();
 
-  const res = await fetch(`${BASE_URL}/Ingredients`, {
+  const res = await fetch(`${BASE_URL}/ingredients`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch Ingredients");
+    throw new Error("Failed to fetch ingredients");
+  }
+
+  return res.json();
+}
+
+export async function getBaseIngredients() {
+  const token = getToken();
+
+  const res = await fetch(`${BASE_URL}/baseingredients`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch base ingredients");
   }
 
   return res.json();
@@ -78,4 +104,21 @@ export async function getPrices(token: string) {
   }
 
   return res.json();
+}
+
+export async function saveRecipe(token: string, recipeData: any) {
+  const res = await fetch(`${BASE_URL}/recipes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(recipeData),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to save recipe");
+  }
+
+  return await res.json();
 }

@@ -1,24 +1,59 @@
 import { useState } from "react";
 import Modal from "./Modal";
+import { useIngredientStore } from "../store/UseIngredientStore";
+import { saveRecipe } from "../services/api";
 
 interface SaveRecipeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: { name: string; isPublic: boolean }) => void;
+  token: string;
 }
 
 export default function SaveRecipeModal({
   isOpen,
   onClose,
-  onSave,
+  token,
 }: SaveRecipeModalProps) {
   const [name, setName] = useState("");
   const [isPublic, setIsPublic] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const slots = useIngredientStore((s) => s.slots);
+  const selectedBowl = useIngredientStore((s) => s.selectedBowl);
+  const ingredientIds = Object.values(slots)
+    .filter((i) => i !== null)
+    .map((i) => i!.id);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({ name, isPublic });
-    onClose();
+
+    if (!selectedBowl) {
+      setError("Select a bowl before saving.");
+      return;
+    }
+
+    const recipeData = {
+      name,
+      isPublic,
+      bowlId: selectedBowl.id,
+      ingredientIds,
+    };
+
+    try {
+      setLoading(true);
+      setError("");
+
+      await saveRecipe(token, recipeData);
+
+      onClose();
+      setName("");
+      setIsPublic(false);
+    } catch (err) {
+      console.error(err);
+      setError("Saving failed.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -44,11 +79,14 @@ export default function SaveRecipeModal({
           <span>Make Public</span>
         </label>
 
+        {error && <p className="text-red-600">{error}</p>}
+
         <button
           type="submit"
+          disabled={loading}
           className="bg-green-600 text-white px-4 py-2 rounded"
         >
-          Save
+          {loading ? "Saving..." : "Save"}
         </button>
       </form>
     </Modal>

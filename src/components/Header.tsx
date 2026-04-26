@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import LoginModal from "./LoginModal"; 
 import { useAuthStore } from "../store/useAuthStore";
+import logo from "../assets/fresse-logo.png";
 
 const Header = () => {
   const { userName, logout } = useAuthStore();
@@ -16,11 +17,13 @@ const Header = () => {
   return (
     <div className="bg-zinc-800 text-white w-full h-32 flex justify-between items-start px-8 pt-4 relative">
 
-      <Link
-        to="/"
-        className="w-24 h-24 rounded-full border-4 border-[#A2D135] flex items-center justify-center flex-col -mt-2 bg-zinc-800 shadow-lg">
-        <span>Fresh Food Factory</span>
-        <span>FRESSE</span>
+      <Link to="/" className="flex items-center">
+        <img 
+          src={logo} 
+          alt="Fresse logo" 
+          className="h-28 w-auto object-contain"
+
+        />
       </Link>
 
       <h1 className="text-3xl font-black tracking-widest mt-6">
@@ -61,10 +64,13 @@ const Header = () => {
           </div>
         )}
       </div>
+
       <LoginModal
         isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}/>
+        onClose={() => setIsLoginOpen(false)}
+      />
     </div>
   );
 };
+
 export default Header;
