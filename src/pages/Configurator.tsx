@@ -33,6 +33,7 @@ function Configurator() {
 
   const token = useAuthStore((s) => s.token);
 
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -42,7 +43,7 @@ function Configurator() {
           await Promise.all([
             getIngredients(),
             getBaseIngredients(),
-            getCategories(), // 🔥 aina kaikki kategoriat
+            getCategories(),
           ]);
 
         setIngredients(ingredientsData);
@@ -91,9 +92,9 @@ function Configurator() {
     <div className="min-h-screen flex flex-col bg-white font-sans">
       <main className="flex-1 max-w-6xl w-full mx-auto p-6 flex flex-col gap-8 mt-4">
 
-        <div className="grid grid-cols-1 lg:grid-cols-[256px_1fr_256px] gap-6 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[256px_1fr_256px] gap-6 items-start">
 
-          <div className="flex justify-center">
+          <div className="flex justify-center flex-shrink-0 w-64">
             <BowlSelection bowls={bowls} />
           </div>
 
@@ -106,13 +107,23 @@ function Configurator() {
             />
           </div>
 
-          <div className="flex justify-center">
-            <BaseSelection
-              ingredients={baseIngredients}
-              baseType={baseType}
-              setBaseType={setBaseType}
-            />
+          <div className="flex justify-center flex-shrink-0 w-64">
+            {baseType === 2 ? (
+              <div className="bg-zinc-800 text-white rounded-[40px] p-6 w-64 text-center">
+                <div className="font-semibold mb-2">Ei pohjaa</div>
+                <p className="text-sm text-gray-300">
+                  Rahkalle ei ole pohjavaihtoehtoja.
+                </p>
+              </div>
+            ) : (
+              <BaseSelection
+                ingredients={baseIngredients}
+                baseType={baseType}
+                setBaseType={setBaseType}
+              />
+            )}
           </div>
+
         </div>
 
         {isTypeLoading ? (
