@@ -19,12 +19,6 @@ export interface Category {
   base_type_id?: number;
 }
 
-export interface Ingredient extends BaseType {
-  categoryId: number;
-  diets: string[];
-  weight_grams: number;
-}
-
 export interface User {
     id: number;
     email: string;
@@ -34,10 +28,10 @@ export interface User {
 
 export interface Recipe {
     id: number;
-    userID: number;
+    userId: number;
     name: string;
-    bowlID: number;
-    inggredientsIds: number[];
+    bowlId: number;
+    ingredientIds: number[];
     slots?: Record<string, Ingredient | null>;
     is_public?: boolean;
     bowl: Bowl;                
@@ -49,4 +43,14 @@ export interface PriceListItem {
     item_id: number;
     price: number;
     type?: string;
+}
+export interface Ingredient {
+  id: number;
+  categoryId: number;
+  name: string;
+  weight_grams: number;
+  diets: string[];
+  image_url: string;
+  wedge_image_url: string;
+  barcode_url: string;
 }
