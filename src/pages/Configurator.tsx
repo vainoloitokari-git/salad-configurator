@@ -132,11 +132,6 @@ function Configurator() {
           </div>
         </div>
 
-       <IngredientSection 
-        categories={categories}
-        ingredients={ingredients}
-        baseType={baseType}
-      />
         <IngredientSection 
           categories={categories}
           ingredients={ingredients}
