@@ -54,6 +54,25 @@ function Configurator() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+  if (!baseType) return;
+
+  const fetchByType = async () => {
+    try {
+      const [bowlsData, categoriesData] = await Promise.all([
+        getBowls(baseType),
+        getCategories(baseType),
+      ]);
+
+      setBowls(bowlsData);
+      setCategories(categoriesData);
+    } catch (err) {
+      console.error("Error fetching type-specific data:", err);
+    }
+  };
+
+  fetchByType();
+}, [baseType]);
   // Fetch bowls + categories based on baseType
   useEffect(() => {
     if (!baseType) return;
@@ -113,6 +132,11 @@ function Configurator() {
           </div>
         </div>
 
+       <IngredientSection 
+        categories={categories}
+        ingredients={ingredients}
+        baseType={baseType}
+      />
         <IngredientSection 
           categories={categories}
           ingredients={ingredients}
@@ -128,6 +152,7 @@ function Configurator() {
         token={token ?? ""}
       />
     </div>
+    
   );
 }
 
