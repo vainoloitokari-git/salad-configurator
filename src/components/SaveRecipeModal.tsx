@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Modal from "./Modal";
-import { useIngredientStore } from "../store/UseIngredientStore";
+import { useIngredientStore } from "../store/useIngredientStore";
 import { saveRecipe } from "../services/api";
 
 interface SaveRecipeModalProps {

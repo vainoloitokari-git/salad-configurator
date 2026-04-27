@@ -1,4 +1,4 @@
-import { useIngredientStore } from "../store/UseIngredientStore";
+import { useIngredientStore } from "../store/useIngredientStore";
 import type { Bowl } from "../types";
 
 type BowlSelectionProps = {

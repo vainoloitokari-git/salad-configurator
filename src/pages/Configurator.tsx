@@ -14,7 +14,7 @@ import {
 } from "../services/api";
 
 import { useAuthStore } from "../store/useAuthStore";
-import { useIngredientStore } from "../store/UseIngredientStore";
+import { useIngredientStore } from "../store/useIngredientStore";
 
 import type { Bowl, Category, Ingredient } from "../types";
 
