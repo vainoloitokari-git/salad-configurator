@@ -14,6 +14,7 @@ import {
 } from "../services/api";
 
 import { useAuthStore } from "../store/useAuthStore";
+import { useIngredientStore } from "../store/UseIngredientStore";
 
 import type { Bowl, Category, Ingredient } from "../types";
 
@@ -22,15 +23,22 @@ function Configurator() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [baseIngredients, setBaseIngredients] = useState<Ingredient[]>([]);
-  const [baseType, setBaseType] = useState<number | null>(1);
 
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // ⭐ KORJAUS: baseType tulee nyt storesta, ei local statesta
+  const baseType = useIngredientStore((s) => s.baseType);
+  const setBaseType = useIngredientStore((s) => s.setBaseType);
 
   const token = useAuthStore((s) => s.token);
 
+  // Fetch ingredients + base ingredients
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
+
         const ingredientsData = await getIngredients();
         const baseIngredientsData = await getBaseIngredients();
 
@@ -38,6 +46,8 @@ function Configurator() {
         setBaseIngredients(baseIngredientsData);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -63,6 +73,40 @@ function Configurator() {
 
   fetchByType();
 }, [baseType]);
+  // Fetch bowls + categories based on baseType
+  useEffect(() => {
+    if (!baseType) return;
+
+    const fetchByType = async () => {
+      try {
+        setIsLoading(true);
+
+        const [bowlsData, categoriesData] = await Promise.all([
+          getBowls(baseType),
+          getCategories(baseType),
+        ]);
+
+        setBowls(bowlsData);
+        setCategories(categoriesData);
+      } catch (err) {
+        console.error("Error fetching type-specific data:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchByType();
+  }, [baseType]);
+
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen gap-3">
+        <div className="w-10 h-10 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+        <p className="text-lg font-medium">Ladataan...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
@@ -78,7 +122,8 @@ function Configurator() {
             <CenterBowl 
               baseType={baseType}
               setBaseType={setBaseType}
-              onSaveClick={() => setIsSaveModalOpen(true)} // ← TÄRKEÄ
+              baseIngredients={baseIngredients}
+              onSaveClick={() => setIsSaveModalOpen(true)}
             />
           </div>
 
@@ -92,6 +137,11 @@ function Configurator() {
         ingredients={ingredients}
         baseType={baseType}
       />
+        <IngredientSection 
+          categories={categories}
+          ingredients={ingredients}
+          baseType={baseType}
+        />
 
         <SummaryBar />
       </main>
@@ -99,7 +149,7 @@ function Configurator() {
       <SaveRecipeModal
         isOpen={isSaveModalOpen}
         onClose={() => setIsSaveModalOpen(false)}
-        token={token}
+        token={token ?? ""}
       />
     </div>
     
