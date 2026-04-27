@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPublicRecipes } from "../services/api";
-import { useIngredientStore } from "../store/UseIngredientStore";
-import { useNavigate } from "react-router-dom";
+
 
 import type { Recipe, Ingredient } from "../types";
 
@@ -9,8 +8,6 @@ function Community() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadRecipe = useIngredientStore((s) => s.loadRecipe);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipes = async () => {
