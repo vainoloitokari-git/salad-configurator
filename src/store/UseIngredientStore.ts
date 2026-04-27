@@ -5,6 +5,7 @@ export interface Bowl {
   id: string;
   name: string;
   volume: number;
+  slot_count: number;
 }
 
 interface IngredientStore {
