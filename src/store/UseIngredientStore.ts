@@ -13,7 +13,7 @@ interface IngredientStore {
   baseType: number;
   selectedBowl: Bowl | null;
 
-  setBaseType: (id: number) => void;
+  setBaseType: (id: number | string) => void;
   setBowl: (bowl: Bowl | null) => void;
   clearSelection: () => void;
   addIngredient: (item: Ingredient) => void;
@@ -26,7 +26,10 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
   baseType: 1,
   selectedBowl: null,
 
-  setBaseType: (id) => set({ baseType: id }),
+  setBaseType: (id) =>
+    set({
+      baseType: Number(id), // 🔥 toimii aina
+    }),
 
   setBowl: (bowl) => set({ selectedBowl: bowl }),
 
@@ -43,7 +46,6 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
 
       const slotCount = state.selectedBowl.slot_count;
 
-      // Etsi ensimmäinen tyhjä slotti
       for (let i = 1; i <= slotCount; i++) {
         const key = `slot-${i}`;
 
@@ -60,7 +62,6 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
       return {};
     }),
 
-
   removeIngredient: (id) =>
     set((state) => {
       const newSlots = { ...state.slots };
@@ -68,24 +69,18 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
       return { slots: newSlots };
     }),
 
-  clearSlot: (slotId: string) =>
-  set((state) => ({
-    slots: {
-      ...state.slots,
-      [slotId]: null,
-    },
-  })),
-
-
   loadRecipe: (recipe) => {
     const { bowl, ingredients } = recipe;
 
     set({
       selectedBowl: bowl,
       slots: Object.fromEntries(
-        ingredients.map((ing: Ingredient, index: number) => [String(index), ing])
+        ingredients.map((ing: Ingredient, index: number) => [
+          `slot-${index + 1}`,
+          ing,
+        ])
       ),
-      baseType: bowl.baseType ?? 1
+      baseType: Number(bowl.baseType) || 1,
     });
-  }
+  },
 }));
