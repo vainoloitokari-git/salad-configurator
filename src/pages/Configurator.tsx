@@ -14,6 +14,7 @@ import {
 } from "../services/api";
 
 import { useAuthStore } from "../store/useAuthStore";
+import { useIngredientStore } from "../store/UseIngredientStore";
 
 import type { Bowl, Category, Ingredient } from "../types";
 
@@ -22,13 +23,17 @@ function Configurator() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [baseIngredients, setBaseIngredients] = useState<Ingredient[]>([]);
-  const [baseType, setBaseType] = useState<number | null>(1);
 
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  // ⭐ KORJAUS: baseType tulee nyt storesta, ei local statesta
+  const baseType = useIngredientStore((s) => s.baseType);
+  const setBaseType = useIngredientStore((s) => s.setBaseType);
+
   const token = useAuthStore((s) => s.token);
 
+  // Fetch ingredients + base ingredients
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,6 +54,7 @@ function Configurator() {
     fetchData();
   }, []);
 
+  // Fetch bowls + categories based on baseType
   useEffect(() => {
     if (!baseType) return;
 

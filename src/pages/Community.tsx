@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react";
-import { getPublicRecipes } from "../services/api"; 
-import type { Recipe } from "../types";
+import { getPublicRecipes } from "../services/api";
+import { useIngredientStore } from "../store/UseIngredientStore";
+import { useNavigate } from "react-router-dom";
+
+import type { Recipe, Ingredient } from "../types";
 
 function Community() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const loadRecipe = useIngredientStore((s) => s.loadRecipe);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -41,7 +47,7 @@ function Community() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {recipes.map((recipe) => (
-          <div 
+          <div
             key={recipe.id}
             className="border rounded-lg shadow-sm p-4 bg-white hover:shadow-md transition"
           >
@@ -51,9 +57,9 @@ function Community() {
               Bowl: {recipe.bowl?.name ?? "Tuntematon"}
             </p>
 
-            <div className="flex flex-wrap gap-2">
-              {recipe.ingredients?.map((ing) => (
-                <span 
+            <div className="flex flex-wrap gap-2 mb-4">
+              {recipe.ingredients?.map((ing: Ingredient) => (
+                <span
                   key={ing.id}
                   className="px-2 py-1 bg-gray-100 rounded text-sm"
                 >
@@ -61,6 +67,16 @@ function Community() {
                 </span>
               ))}
             </div>
+
+          <button
+            onClick={() => {
+              alert("Ominaisuus tulossa myöhemmin!");
+            }}
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          >
+            Lisää kulhoon
+          </button>
+
           </div>
         ))}
       </div>
