@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Category, Ingredient } from "../types";
 import IngredientCard from "./IngredientCard";
-import { useIngredientStore } from "../store/useIngredientStore";
 
 type IngredientSectionProps = {
   categories: Category[];
@@ -16,8 +15,6 @@ export default function IngredientSection({
 }: IngredientSectionProps) {
   const [activeCategory, setActiveCategory] = useState<number | "all">("all");
   const [searchQuery, setSearchQuery] = useState("");
-
-  const addIngredient = useIngredientStore((state) => state.addIngredient);
 
   useEffect(() => {
     setActiveCategory("all");
@@ -49,7 +46,7 @@ export default function IngredientSection({
 
         {filteredCategories.map((cat) => (
           <button
-            key={cat.id}
+            key={String(cat.id)}
             onClick={() => setActiveCategory(cat.id)}
             className={`px-4 py-2 rounded-full font-medium ${
               activeCategory === cat.id
@@ -62,9 +59,18 @@ export default function IngredientSection({
         ))}
       </div>
 
+      <div className="flex items-center gap-2">
+        <input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Hae ainesosia..."
+          className="px-3 py-2 rounded-md bg-zinc-900 text-white w-full"
+        />
+      </div>
+
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredIngredients.map((item) => (
-          <IngredientCard key={item.id} ingredient={item} />
+          <IngredientCard key={String(item.id)} ingredient={item} />
         ))}
       </div>
 

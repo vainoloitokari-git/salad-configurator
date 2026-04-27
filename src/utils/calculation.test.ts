@@ -12,6 +12,8 @@ describe("calculateTotalWeight", () => {
         diets: [],
         image_url: "1",
         barcode_url: "",
+        wedge_image_url: ""
+
       },
       {
         name: "Sugar",
@@ -21,6 +23,8 @@ describe("calculateTotalWeight", () => {
         diets: [],
         image_url: "1",
         barcode_url: "",
+        wedge_image_url: ""
+
       },
     ];
 

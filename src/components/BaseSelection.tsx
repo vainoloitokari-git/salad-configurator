@@ -1,4 +1,3 @@
-import { useIngredientStore } from "../store/useIngredientStore";
 import type { Ingredient } from "../types";
 
 type BaseSelectionProps = {
@@ -23,11 +22,11 @@ export default function BaseSelection({
 
       {ingredients.map((item) => (
         <div
-          key={item.id}
-          onClick={() => setBaseType(item.id)}
+          key={String(item.id)}
+          onClick={() => setBaseType(Number(item.id))}
           className={`flex items-center gap-4 p-2 rounded-lg cursor-pointer transition
             ${
-              baseType === item.id
+              baseType === Number(item.id)
                 ? "bg-lime-500 text-black"
                 : "text-gray-300 hover:bg-[#3a3a3a]"
             }`}

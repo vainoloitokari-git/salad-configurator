@@ -22,29 +22,22 @@ export default function CenterBowl({
   const removeIngredient = useIngredientStore((state) => state.removeIngredient);
   const clearSelection = useIngredientStore((state) => state.clearSelection);
 
-  const activeSlots = Object.entries(slots).filter(
-    ([_, item]) => item != null
-  ) as [string, Ingredient][];
+  const activeSlots = Object.entries(slots)
+    .filter(([_, item]) => item != null)
+    .map(([k, v]) => [k, v as Ingredient] as [string, Ingredient]);
 
   const selectedBase = baseIngredients.find((b) => b.id === baseType);
 
   const slotCount =
-    selectedBowl?.slot_count ??
-    activeSlots.length ??
-    4;
+    selectedBowl?.slot_count ?? (activeSlots.length || 4);
 
   const dividerImage =
-    slotCount === 4
-      ? divider4
-      : slotCount === 6
-      ? divider6
-      : null;
+    slotCount === 4 ? divider4 : slotCount === 6 ? divider6 : null;
 
   const radius = 30;
 
   return (
     <div className="flex flex-col items-center justify-center">
-
       <div className="flex gap-3 mb-6 items-center">
         <button
           onClick={() => setBaseType(1)}
@@ -86,7 +79,6 @@ export default function CenterBowl({
       </div>
 
       <div className="relative w-80 h-80 rounded-full border-[12px] border-gray-200 bg-gray-50 shadow-inner overflow-hidden flex items-center justify-center">
-
         {selectedBase && (
           <img
             src={selectedBase.image_url}
@@ -139,9 +131,7 @@ export default function CenterBowl({
         </div>
       </div>
 
-      <div className="mt-4 text-gray-600">
-        {selectedBowl?.volume ?? 0} ml
-      </div>
+      <div className="mt-4 text-gray-600">{selectedBowl?.volume ?? 0} ml</div>
     </div>
   );
 }

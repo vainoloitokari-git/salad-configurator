@@ -20,7 +20,7 @@ export default function BowlSelection({ bowls }: BowlSelectionProps) {
 
       {bowls.map((bowl) => (
         <button
-          key={bowl.id}
+          key={String(bowl.id)}
           onClick={() => setBowl(bowl)}
           className={`flex items-center gap-4 cursor-pointer transition ${
             selectedBowl && String(selectedBowl.id) === String(bowl.id)

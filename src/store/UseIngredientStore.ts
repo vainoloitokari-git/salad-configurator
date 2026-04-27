@@ -1,12 +1,5 @@
 import { create } from "zustand";
-import type { Ingredient } from "../types";
-
-export interface Bowl {
-  id: string;
-  name: string;
-  volume: number;
-  slot_count: number;
-}
+import type { Ingredient, Bowl } from "../types";
 
 interface IngredientStore {
   slots: Record<string, Ingredient | null>;
@@ -28,7 +21,7 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
 
   setBaseType: (id) =>
     set({
-      baseType: Number(id), // 🔥 toimii aina
+      baseType: Number(id),
     }),
 
   setBowl: (bowl) => set({ selectedBowl: bowl }),
