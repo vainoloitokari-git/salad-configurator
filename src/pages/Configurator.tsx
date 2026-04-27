@@ -25,13 +25,15 @@ function Configurator() {
   const [baseType, setBaseType] = useState<number | null>(1);
 
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const token = useAuthStore((s) => s.token);
 
-  // Hae vain ainesosat ja pohja-ainesosat kerran
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
+
         const ingredientsData = await getIngredients();
         const baseIngredientsData = await getBaseIngredients();
 
@@ -39,18 +41,21 @@ function Configurator() {
         setBaseIngredients(baseIngredientsData);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  // Hae rasiat ja kategoriat aina kun baseType vaihtuu (Salaatti / Rahka)
   useEffect(() => {
     if (!baseType) return;
 
     const fetchByType = async () => {
       try {
+        setIsLoading(true);
+
         const [bowlsData, categoriesData] = await Promise.all([
           getBowls(baseType),
           getCategories(baseType),
@@ -60,11 +65,23 @@ function Configurator() {
         setCategories(categoriesData);
       } catch (err) {
         console.error("Error fetching type-specific data:", err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchByType();
   }, [baseType]);
+
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen gap-3">
+        <div className="w-10 h-10 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+        <p className="text-lg font-medium">Ladataan...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-white font-sans">
@@ -102,7 +119,7 @@ function Configurator() {
       <SaveRecipeModal
         isOpen={isSaveModalOpen}
         onClose={() => setIsSaveModalOpen(false)}
-        token={token}
+        token={token ?? ""}
       />
     </div>
   );
