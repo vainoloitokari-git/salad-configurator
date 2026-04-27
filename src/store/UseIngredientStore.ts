@@ -5,6 +5,7 @@ export interface Bowl {
   id: string;
   name: string;
   volume: number;
+  slot_count: number;
 }
 
 interface IngredientStore {
@@ -37,12 +38,28 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
     }),
 
   addIngredient: (item) =>
-    set((state) => ({
-      slots: {
-        ...state.slots,
-        [item.id]: item,
-      },
-    })),
+    set((state) => {
+      if (!state.selectedBowl) return {};
+
+      const slotCount = state.selectedBowl.slot_count;
+
+      // Etsi ensimmäinen tyhjä slotti
+      for (let i = 1; i <= slotCount; i++) {
+        const key = `slot-${i}`;
+
+        if (!state.slots[key]) {
+          return {
+            slots: {
+              ...state.slots,
+              [key]: item,
+            },
+          };
+        }
+      }
+
+      return {};
+    }),
+
 
   removeIngredient: (id) =>
     set((state) => {
@@ -50,6 +67,15 @@ export const useIngredientStore = create<IngredientStore>((set) => ({
       delete newSlots[String(id)];
       return { slots: newSlots };
     }),
+
+  clearSlot: (slotId: string) =>
+  set((state) => ({
+    slots: {
+      ...state.slots,
+      [slotId]: null,
+    },
+  })),
+
 
   loadRecipe: (recipe) => {
     const { bowl, ingredients } = recipe;
