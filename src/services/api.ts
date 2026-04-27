@@ -122,3 +122,9 @@ export async function saveRecipe(token: string, recipeData: any) {
 
   return await res.json();
 }
+
+export async function getPublicRecipes() {
+  const res = await fetch("https://fresse-api.onrender.com/api/recipes");
+  if (!res.ok) throw new Error("Failed to fetch recipes");
+  return res.json();
+}

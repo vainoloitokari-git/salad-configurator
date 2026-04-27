@@ -40,6 +40,8 @@ export interface Recipe {
     inggredientsIds: number[];
     slots?: Record<string, Ingredient | null>;
     is_public?: boolean;
+    bowl: Bowl;                
+    ingredients: Ingredient[];  
 }
 
 export interface PriceListItem {
