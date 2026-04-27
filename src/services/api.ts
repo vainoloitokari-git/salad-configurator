@@ -23,14 +23,10 @@ export async function getBowls(typeId?: number) {
 }
 
 
-export async function getCategories(typeId?: number) {
-  const token = getToken();
+export async function getCategories() {
+  const token = localStorage.getItem("token");
 
-  const url = typeId
-    ? `${BASE_URL}/categories?type_id=${typeId}`
-    : `${BASE_URL}/categories`;
-
-  const res = await fetch(url, {
+  const res = await fetch(`${BASE_URL}/Categories`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -42,7 +38,6 @@ export async function getCategories(typeId?: number) {
 
   return res.json();
 }
-
 
 export async function getIngredients() {
   const token = getToken();
