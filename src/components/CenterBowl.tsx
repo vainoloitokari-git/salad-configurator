@@ -1,4 +1,4 @@
-import { useIngredientStore } from "../store/UseIngredientStore";
+import { useIngredientStore } from "../store/useIngredientStore";
 import type { Ingredient } from "../types";
 
 import divider4 from "../assets/divider-4.png";

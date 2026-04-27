@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { Category, Ingredient } from "../types";
 import IngredientCard from "./IngredientCard";
-import { useIngredientStore } from "../store/UseIngredientStore";
+import { useIngredientStore } from "../store/useIngredientStore";
 
 type IngredientSectionProps = {
   categories: Category[];

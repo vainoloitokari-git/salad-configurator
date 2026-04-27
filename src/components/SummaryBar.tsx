@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useIngredientStore } from "../store/UseIngredientStore";
+import { useIngredientStore } from "../store/useIngredientStore";
 import { usePriceStore } from "../store/usePriceStore";
 import { useAuthStore } from "../store/useAuthStore";
 import { calculateTotalWeight } from "../utils/calculation";

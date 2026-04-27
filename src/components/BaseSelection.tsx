@@ -1,3 +1,4 @@
+import { useIngredientStore } from "../store/useIngredientStore";
 import type { Ingredient } from "../types";
 
 type BaseSelectionProps = {
