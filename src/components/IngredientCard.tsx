@@ -15,8 +15,8 @@ export default function IngredientCard({ ingredient, onClick }: Props) {
   const { token } = useAuthStore();
 
   useEffect(() => {
-    if(token) {
-      fetchPrices(token)
+    if (token) {
+      fetchPrices(token);
     }
   }, [token, fetchPrices]);
 
@@ -28,7 +28,9 @@ export default function IngredientCard({ ingredient, onClick }: Props) {
     }
   };
 
-  const priceItem = prices.find((p) => p.id === String(ingredient.id));
+  const priceItem = prices.find(
+    (p) => String(p.item_id) === String(ingredient.id)
+  );
 
   return (
     <div
@@ -36,7 +38,8 @@ export default function IngredientCard({ ingredient, onClick }: Props) {
       className="border border-gray-200 rounded-lg p-4 w-[150px] min-h-[150px] flex flex-col gap-2 shadow cursor-pointer transition hover:shadow-md hover:scale-[1.02]"
     >
       <h3
-        style={{ margin: 0, fontSize: "1.1rem", fontWeight: 600 }}>
+        style={{ margin: 0, fontSize: "1.1rem", fontWeight: 600 }}
+      >
         {ingredient.name}
       </h3>
 
