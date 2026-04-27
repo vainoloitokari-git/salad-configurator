@@ -14,7 +14,7 @@ export default function SummaryBar() {
 
   const token = useAuthStore((state) => state.token);
 
-  
+
   useEffect(() => {
     if (token) {
       fetchPrices(token);
@@ -23,37 +23,34 @@ export default function SummaryBar() {
 
  
   const activeIngredients = useMemo(() => {
-    const list = Object.values(slots).filter(
-      (item): item is Ingredient => item != null
-    );
-
-    return list;
+    return Object.entries(slots)
+      .filter(([, item]) => item != null)
+      .map(([slotKey, item]) => ({
+        slotKey,
+        item: item as Ingredient,
+      }));
   }, [slots]);
 
-
+ 
   const totalWeight = useMemo(() => {
-    const weight = calculateTotalWeight(activeIngredients);
-
-    return weight;
+    return calculateTotalWeight(activeIngredients.map((x) => x.item));
   }, [activeIngredients]);
 
-  
+
   const totalPrice = useMemo(() => {
-    const total = activeIngredients.reduce((sum, ingredient) => {
+    return activeIngredients.reduce((sum, { item }) => {
       const priceItem = prices.find(
-        (p: any) => Number(p.item_id) === Number(ingredient.id)
+        (p: any) => Number(p.item_id) === Number(item.id)
       );
 
       return sum + (priceItem?.price ?? 0);
     }, 0);
-
-    return total;
   }, [activeIngredients, prices]);
 
   return (
     <div className="bg-zinc-800 rounded-[3rem] p-8 text-white w-full flex flex-col md:flex-row gap-8 shadow-xl">
 
-      {/* LEFT */}
+     
       <div className="flex-1 bg-[#3a3a3a] rounded-3xl p-6 min-h-[150px] shadow-inner">
         <h3 className="font-semibold mb-4">Valitut ainekset</h3>
 
@@ -63,15 +60,15 @@ export default function SummaryBar() {
           </div>
         ) : (
           <div className="flex flex-wrap gap-3">
-            {activeIngredients.map((item) => (
+            {activeIngredients.map(({ item, slotKey }) => (
               <div
-                key={item.id}
+                key={slotKey}
                 className="flex items-center gap-2 bg-zinc-700 px-4 py-2 rounded-full shadow-md"
               >
                 <span>{item.name}</span>
 
                 <button
-                  onClick={() => removeIngredient(item.id)}
+                  onClick={() => removeIngredient(slotKey)}
                   className="text-red-300 hover:text-red-400 font-bold"
                 >
                   ×
@@ -82,7 +79,6 @@ export default function SummaryBar() {
         )}
       </div>
 
-      {/* RIGHT */}
       <div className="flex-1 flex flex-col justify-center items-center gap-6">
 
         <div className="text-center">
